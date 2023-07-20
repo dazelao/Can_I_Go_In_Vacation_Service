@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -68,5 +70,22 @@ public class ScheduleService {
         }
         return new WorkPattern(workDays);
     }
+
+    public int getUsersCountByStatusAndDate(ScheduleStatus status, LocalDate date) {
+        return scheduleRepository.countByStatusAndDate(status, date);
+    }
+
+    public Map<LocalDate, Integer> getUsersCountByStatusAndDateRange(ScheduleStatus status, LocalDate startDate, LocalDate endDate) {
+        List<Object[]> result = scheduleRepository.countByStatusAndDateBetween(status, startDate, endDate);
+        Map<LocalDate, Integer> countByDate = new HashMap<>();
+        for (Object[] row : result) {
+            LocalDate date = (LocalDate) row[0];
+            Long count = (Long) row[1];
+            countByDate.put(date, count.intValue());
+        }
+        return countByDate;
+    }
+
+
 }
 

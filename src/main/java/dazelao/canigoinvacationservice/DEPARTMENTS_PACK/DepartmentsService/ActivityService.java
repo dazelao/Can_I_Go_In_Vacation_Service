@@ -24,4 +24,6 @@ public class ActivityService {
     public Optional<Activity> getActivityById(int activityId) {
         return activityRepository.findById(activityId);
     }
+
+
 }

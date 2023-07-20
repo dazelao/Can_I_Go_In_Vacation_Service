@@ -25,6 +25,7 @@ public class DepartmentController {
         return ResponseEntity.ok(savedDepartment);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<Department> getDepartmentById(@PathVariable Integer id) {
         return departmentService.getDepartmentById(id)
@@ -38,3 +39,4 @@ public class DepartmentController {
         return ResponseEntity.ok(departments);
     }
 }
+

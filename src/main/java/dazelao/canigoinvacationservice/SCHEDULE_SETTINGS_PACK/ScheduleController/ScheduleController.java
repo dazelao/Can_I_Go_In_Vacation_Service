@@ -2,15 +2,19 @@ package dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleControlle
 
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsService.DepartmentActivityService;
 import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleModel.ScheduleRequest;
+import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleModel.ScheduleStatus;
 import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleService.ScheduleService;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Service.UserService;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users.BaseUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -51,6 +55,21 @@ public class ScheduleController {
 
         return ResponseEntity.ok("Schedule generated successfully for DepartmentActivity.");
     }
+
+    @GetMapping("/users/count")
+    public ResponseEntity<Integer> getUsersCountByStatusAndDate(@RequestParam ScheduleStatus status, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        int count = scheduleService.getUsersCountByStatusAndDate(status, date);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/users/count/range")
+    public ResponseEntity<Map<LocalDate, Integer>> getUsersCountByStatusAndDateRange(@RequestParam ScheduleStatus status,
+                                                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        Map<LocalDate, Integer> countByDate = scheduleService.getUsersCountByStatusAndDateRange(status, startDate, endDate);
+        return ResponseEntity.ok(countByDate);
+    }
+
 }
 
 

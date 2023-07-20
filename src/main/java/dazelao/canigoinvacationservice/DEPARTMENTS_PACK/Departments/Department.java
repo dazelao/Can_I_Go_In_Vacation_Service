@@ -32,4 +32,9 @@ public class Department {
 
     public Department() {
     }
+
+    public Department(int id, String departmentName) {
+        this.id = id;
+        this.departmentName = departmentName;
+    }
 }
