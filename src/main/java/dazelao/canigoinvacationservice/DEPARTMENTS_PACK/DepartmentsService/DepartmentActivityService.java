@@ -6,6 +6,8 @@ import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.DepartmentAc
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.ActivityRepository;
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.DepartmentActivityRepo;
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.DepartmentRepo;
+import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.UserRepository.UserRepository;
+import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users.BaseUser;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,14 @@ public class DepartmentActivityService {
     private final DepartmentRepo departmentRepo;
     private final ActivityRepository activityRepo;
     private final DepartmentActivityRepo departmentActivityRepo;
+    private final UserRepository userRepository;
 
     @Autowired
-    public DepartmentActivityService(DepartmentRepo departmentRepo, ActivityRepository activityRepo, DepartmentActivityRepo departmentActivityRepo) {
+    public DepartmentActivityService(DepartmentRepo departmentRepo, ActivityRepository activityRepo, DepartmentActivityRepo departmentActivityRepo, UserRepository userRepository) {
         this.departmentRepo = departmentRepo;
         this.activityRepo = activityRepo;
         this.departmentActivityRepo = departmentActivityRepo;
+        this.userRepository = userRepository;
     }
 
     public void addActivityToDepartment(int departmentId, int activityId) {
@@ -54,6 +58,10 @@ public class DepartmentActivityService {
     public DepartmentActivity getDepartmentActivityById(int departmentActivityId) {
         return departmentActivityRepo.findById(departmentActivityId)
                 .orElseThrow(() -> new EntityNotFoundException("DepartmentActivity with id " + departmentActivityId + " not found."));
+    }
+
+    public List<BaseUser> getUsersByDepartmentActivityId(int departmentActivityId) {
+        return userRepository.findByDepartmentActivityId(departmentActivityId);
     }
 
 

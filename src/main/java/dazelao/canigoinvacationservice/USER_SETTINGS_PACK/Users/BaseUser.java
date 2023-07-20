@@ -1,8 +1,12 @@
 package dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users;
 
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.DepartmentActivity;
+import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleModel.Schedule;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -20,6 +24,9 @@ public class BaseUser {
     @ManyToOne
     @JoinColumn(name = "department_activity")
     private DepartmentActivity departmentActivity;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Schedule> schedules = new ArrayList<>();
 
 
     public BaseUser(String username, String email) {
