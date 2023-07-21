@@ -13,7 +13,6 @@ import java.util.Optional;
 public interface VacationRepository extends JpaRepository<VacationParam, Long>{
     
     Optional<VacationParam> findFirstByActivityOrderByUpdatedAtDesc(Activity activity);
-
     Optional<VacationParam> findFirstByDepartmentOrderByUpdatedAtDesc(Department department);
 
     VacationParam findByActivity(Activity activity);

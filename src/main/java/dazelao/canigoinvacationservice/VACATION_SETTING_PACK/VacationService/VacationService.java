@@ -17,7 +17,6 @@ public class VacationService {
     public VacationService(VacationRepository vacationRepository) {
         this.vacationRepository = vacationRepository;
     }
-
     public Optional<VacationParam> getLastActivityVacationCount(Activity activity) {
         return vacationRepository.findFirstByActivityOrderByUpdatedAtDesc(activity);
     }

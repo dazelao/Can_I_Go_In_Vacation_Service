@@ -1,7 +1,7 @@
 package dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Service;
 
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.DepartmentActivity;
-import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.DepartmentActivityRepo;
+import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.DepartmentActivityRepository;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.UserRepository.UserRepository;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users.BaseUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,10 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final DepartmentActivityRepo departmentActivityRepo;
+    private final DepartmentActivityRepository departmentActivityRepo;
 
     @Autowired
-    public UserService(UserRepository userRepository, DepartmentActivityRepo departmentActivityRepo) {
+    public UserService(UserRepository userRepository, DepartmentActivityRepository departmentActivityRepo) {
         this.userRepository = userRepository;
         this.departmentActivityRepo = departmentActivityRepo;
     }

@@ -1,5 +1,6 @@
 package dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.DepartmentActivity;
 import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleModel.Schedule;
 import jakarta.persistence.*;
@@ -25,6 +26,7 @@ public class BaseUser {
     @JoinColumn(name = "department_activity")
     private DepartmentActivity departmentActivity;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> schedules = new ArrayList<>();
 

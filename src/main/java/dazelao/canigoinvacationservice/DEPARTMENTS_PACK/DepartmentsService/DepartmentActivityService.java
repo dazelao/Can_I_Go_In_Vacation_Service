@@ -4,7 +4,7 @@ import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.Activity;
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.Department;
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.DepartmentActivity;
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.ActivityRepository;
-import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.DepartmentActivityRepo;
+import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.DepartmentActivityRepository;
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.DepartmentRepo;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.UserRepository.UserRepository;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users.BaseUser;
@@ -20,11 +20,11 @@ public class DepartmentActivityService {
 
     private final DepartmentRepo departmentRepo;
     private final ActivityRepository activityRepo;
-    private final DepartmentActivityRepo departmentActivityRepo;
+    private final DepartmentActivityRepository departmentActivityRepo;
     private final UserRepository userRepository;
 
     @Autowired
-    public DepartmentActivityService(DepartmentRepo departmentRepo, ActivityRepository activityRepo, DepartmentActivityRepo departmentActivityRepo, UserRepository userRepository) {
+    public DepartmentActivityService(DepartmentRepo departmentRepo, ActivityRepository activityRepo, DepartmentActivityRepository departmentActivityRepo, UserRepository userRepository) {
         this.departmentRepo = departmentRepo;
         this.activityRepo = activityRepo;
         this.departmentActivityRepo = departmentActivityRepo;
