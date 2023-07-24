@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -50,12 +54,34 @@ public class ScheduleService {
         }
     }
 
-    public void generateScheduleForDepartmentActivity(YearMonth yearMonth, String workPattern, int departmentActivityId) {
-        List<BaseUser> users = departmentActivityService.getUsersByDepartmentActivityId(departmentActivityId);
-        for (BaseUser user : users) {
-            generateScheduleForMonth(user, yearMonth, workPattern);
-        }
+//    public void generateScheduleForDepartmentActivity(YearMonth yearMonth, String workPattern, int departmentActivityId) {
+//        List<BaseUser> users = departmentActivityService.getUsersByDepartmentActivityId(departmentActivityId);
+//        for (BaseUser user : users) {
+//            generateScheduleForMonth(user, yearMonth, workPattern);
+//        }
+//    }
+public void generateScheduleForDepartmentActivity(YearMonth yearMonth, String workPattern, int departmentActivityId) {
+    long startTime = System.currentTimeMillis();
+    List<BaseUser> users = departmentActivityService.getUsersByDepartmentActivityId(departmentActivityId);
+
+
+    int numThreads = Runtime.getRuntime().availableProcessors();
+
+    ExecutorService executorService = Executors.newFixedThreadPool(numThreads);
+
+    for (BaseUser user : users) {
+        Runnable task = () -> generateScheduleForMonth(user, yearMonth, workPattern);
+        executorService.submit(task);
     }
+    executorService.shutdown();
+    try {
+        executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    long endTime = System.currentTimeMillis();
+    System.out.println("Время выполнения метода generateScheduleForDepartmentActivity: " + (endTime - startTime) + " мс");
+}
 
     private WorkPattern createWorkPattern(String workPattern) {
         List<ScheduleStatus> workDays = new ArrayList<>();
@@ -88,4 +114,6 @@ public class ScheduleService {
 
 
 }
+
+
 

@@ -18,5 +18,6 @@ public class ScheduleRequest {
     public Month getMonthEnum() {
         return Month.valueOf(month.toUpperCase());
     }
+
 }
 

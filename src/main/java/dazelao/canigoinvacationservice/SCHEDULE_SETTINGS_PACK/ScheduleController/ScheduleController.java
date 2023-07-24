@@ -1,9 +1,9 @@
 package dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleController;
 
-import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsService.DepartmentActivityService;
 import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleModel.ScheduleRequest;
 import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleModel.ScheduleStatus;
 import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleService.ScheduleService;
+import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleService.ScheduleTotalTimeService;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Service.UserService;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users.BaseUser;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,10 +14,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.YearMonth;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+
+import static jdk.jfr.internal.Utils.formatDuration;
+
 
 @RestController
 @RequestMapping("/api/schedule")
@@ -26,10 +33,13 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
     private final UserService userService;
+
+    private final ScheduleTotalTimeService scheduleTotalTimeService;
     @Autowired
-    public ScheduleController(ScheduleService scheduleService, UserService userService) {
+    public ScheduleController(ScheduleService scheduleService, UserService userService, ScheduleTotalTimeService scheduleTotalTimeService) {
         this.scheduleService = scheduleService;
         this.userService = userService;
+        this.scheduleTotalTimeService = scheduleTotalTimeService;
     }
 
     @PostMapping("/generate")
@@ -76,6 +86,19 @@ public class ScheduleController {
         Map<LocalDate, Integer> countByDate = scheduleService.getUsersCountByStatusAndDateRange(status, startDate, endDate);
         return ResponseEntity.ok(countByDate);
     }
+
+
+    @PostMapping("/total-time")
+    @Operation(summary = "Список нагрузки  " +
+            "{\n" +
+            "\"year\": 2023,\n" +
+            "\"month\": \"JULY\"\n" +
+            " }")
+    public ResponseEntity<Map<Long, String>> getTotalTimeByMonth(@RequestBody ScheduleRequest scheduleRequest) throws ExecutionException, InterruptedException {
+        Map<Long, String> totalTimeMap = scheduleTotalTimeService.getTotalTimeByUserIdAndMonth(scheduleRequest);
+        return ResponseEntity.ok(totalTimeMap);
+    }
+
 
 }
 

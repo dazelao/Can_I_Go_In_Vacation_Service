@@ -15,6 +15,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     int countByStatusAndDate(ScheduleStatus status, LocalDate date);
 
+
     @Query("SELECT s.date, COUNT(s) " +
             "FROM Schedule s " +
             "WHERE s.status = :status AND s.date BETWEEN :startDate AND :endDate " +
@@ -22,6 +23,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Object[]> countByStatusAndDateBetween(@Param("status") ScheduleStatus status, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
 
-
+    List<Schedule> findByDateBetween(LocalDate of, LocalDate of1);
 }
 
