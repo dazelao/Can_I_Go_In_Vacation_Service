@@ -2,6 +2,8 @@ package dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsController;
 
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.Department;
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsService.DepartmentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/departments")
+@Tag(name = "Отделы", description ="Работа с отделами")
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -20,6 +23,7 @@ public class DepartmentController {
     }
 
     @PostMapping
+    @Operation(summary = "Генерация нового отдела")
     public ResponseEntity<Department> saveDepartment(@RequestBody Department department) {
         Department savedDepartment = departmentService.saveDepartment(department);
         return ResponseEntity.ok(savedDepartment);
@@ -27,6 +31,7 @@ public class DepartmentController {
 
 
     @GetMapping("/{id}")
+    @Operation(summary = "Получение данных по отделу по его id")
     public ResponseEntity<Department> getDepartmentById(@PathVariable Integer id) {
         return departmentService.getDepartmentById(id)
                 .map(ResponseEntity::ok)
@@ -34,6 +39,7 @@ public class DepartmentController {
     }
 
     @GetMapping
+    @Operation(summary = "Получение списка отделов")
     public ResponseEntity<List<Department>> getAllDepartments() {
         List<Department> departments = departmentService.getAllDepartment();
         return ResponseEntity.ok(departments);

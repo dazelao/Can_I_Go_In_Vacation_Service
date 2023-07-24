@@ -6,6 +6,8 @@ import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleModel.Sche
 import dazelao.canigoinvacationservice.SCHEDULE_SETTINGS_PACK.ScheduleService.ScheduleService;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Service.UserService;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users.BaseUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/schedule")
+@Tag(name = "Расписание", description ="Работа с расписанием")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -30,6 +33,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/generate")
+    @Operation(summary = "Генерация расписания по его id")
     public ResponseEntity<String> generateSchedule(@RequestBody ScheduleRequest request) {
         Long userId = request.getUserId();
         Optional<BaseUser> optionalUser = userService.getUserById(userId);
@@ -47,6 +51,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/generateByDepartmentActivity")
+    @Operation(summary = "Генерация расписания по активностям отдела")
     public ResponseEntity<String> generateScheduleByDepartmentActivity(@RequestBody ScheduleRequest request) {
         int departmentActivityId = request.getDepartmentActivityId();
         YearMonth yearMonth = YearMonth.of(request.getYear(), request.getMonthEnum());
@@ -57,12 +62,14 @@ public class ScheduleController {
     }
 
     @GetMapping("/users/count")
+    @Operation(summary = "Получение пользователей по их статусам на конкретную дату (2023-07-28 - пример даты)")
     public ResponseEntity<Integer> getUsersCountByStatusAndDate(@RequestParam ScheduleStatus status, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         int count = scheduleService.getUsersCountByStatusAndDate(status, date);
         return ResponseEntity.ok(count);
     }
 
     @GetMapping("/users/count/range")
+    @Operation(summary = "Получаем нагрузку по периоду")
     public ResponseEntity<Map<LocalDate, Integer>> getUsersCountByStatusAndDateRange(@RequestParam ScheduleStatus status,
                                                                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {

@@ -7,6 +7,8 @@ import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsService.Activ
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsService.DepartmentService;
 import dazelao.canigoinvacationservice.VACATION_SETTING_PACK.VacationParam.VacationParam;
 import dazelao.canigoinvacationservice.VACATION_SETTING_PACK.VacationService.VacationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/vacation")
+@Tag(name = "Отпуск конфигуратор", description ="работа с лимитами")
 public class VacationController {
     private final VacationService vacationService;
     private final ActivityService activityService;
@@ -28,6 +31,7 @@ public class VacationController {
     }
 
     @PostMapping("/activity/{activityId}/count/{count}")
+    @Operation(summary = "Установка квоты, по активности")
     public ResponseEntity<VacationParam> setActivityVacationCount(@PathVariable Integer activityId, @PathVariable Integer count) {
         Optional<Activity> activity = activityService.getActivityById(activityId);
         if (activity.isEmpty()) {
@@ -39,6 +43,7 @@ public class VacationController {
     }
 
     @PostMapping("/department/{departmentId}/count/{count}")
+    @Operation(summary = "Установка квоты, по отделу")
     public ResponseEntity<VacationParam> setDepartmentVacationCount(@PathVariable Integer departmentId, @PathVariable Integer count) {
         Optional<Department> department = departmentService.getDepartmentById(departmentId);
         if (department.isEmpty()) {
@@ -50,6 +55,7 @@ public class VacationController {
     }
 
     @GetMapping("/activity/{activityId}/count")
+    @Operation(summary = "Получение квоты, по активности")
     public ResponseEntity<Integer> getActivityVacationCount(@PathVariable Integer activityId) {
         Optional<Activity> activity = activityService.getActivityById(activityId);
         if (activity.isEmpty()) {
@@ -62,6 +68,7 @@ public class VacationController {
     }
 
     @GetMapping("/department/{departmentId}/count")
+    @Operation(summary = "Получение квоты, по департаменту")
     public ResponseEntity<Integer> getDepartmentVacationCount(@PathVariable Integer departmentId) {
         Optional<Department> department = departmentService.getDepartmentById(departmentId);
         if (department.isEmpty()) {
@@ -74,6 +81,7 @@ public class VacationController {
     }
 
     @PutMapping("/activity/{activityId}/count/{count}")
+    @Operation(summary = "Обновление квоты, по активности")
     public ResponseEntity<VacationParam> updateActivityVacationCount(@PathVariable Integer activityId, @PathVariable Integer count) {
         Optional<Activity> activity = activityService.getActivityById(activityId);
         if (activity.isEmpty()) {
@@ -85,6 +93,7 @@ public class VacationController {
     }
 
     @PutMapping("/department/{departmentId}/count/{count}")
+    @Operation(summary = "Обновление квоты, по отделу")
     public ResponseEntity<VacationParam> updateDepartmentVacationCount(@PathVariable Integer departmentId, @PathVariable Integer count) {
         Optional<Department> department = departmentService.getDepartmentById(departmentId);
         if (department.isEmpty()) {
