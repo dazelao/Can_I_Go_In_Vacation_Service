@@ -15,11 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@Tag(name = "Пользователи", description ="Контроллер работы с пользователями")
+@Tag(name = "Пользователи", description = "Контроллер работы с пользователями")
 public class UserController {
     private final UserService userService;
     private final DepartmentActivityService departmentActivityService;
-
 
     @Autowired
     public UserController(UserService userService, DepartmentActivityService departmentActivityService) {
@@ -69,4 +68,42 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-   }
+    @PutMapping("/{id}")
+    @Operation(summary = "Обновление данных пользователя по id")
+    public ResponseEntity<BaseUser> updateUser(@PathVariable Long id, @RequestBody BaseUser updatedUser) {
+        BaseUser existingUser = userService.getUserById(id)
+                .orElse(null);
+
+        if (existingUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        existingUser.setUsername(updatedUser.getUsername());
+        existingUser.setEmail(updatedUser.getEmail());
+
+        DepartmentActivity updatedDepartmentActivity = updatedUser.getDepartmentActivity();
+        if (updatedDepartmentActivity != null) {
+            DepartmentActivity departmentActivity = departmentActivityService.getDepartmentActivityById(updatedDepartmentActivity.getId());
+            existingUser.setDepartmentActivity(departmentActivity);
+        } else {
+            existingUser.setDepartmentActivity(null);
+        }
+
+        BaseUser updatedUserEntity = userService.updateUser(existingUser);
+        return ResponseEntity.ok(updatedUserEntity);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Удаление пользователя по id")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        BaseUser existingUser = userService.getUserById(id)
+                .orElse(null);
+
+        if (existingUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
+}

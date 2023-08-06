@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/department-activity")
-@Tag(name = "Создание связок между отделами и активностями", description ="Работа с отделами и активностями")
+@Tag(name = "Создание связок между отделами и активностями", description = "Работа с отделами и активностями")
 public class DepartmentActivityController {
 
     private final DepartmentActivityService departmentActivityService;
@@ -24,16 +24,39 @@ public class DepartmentActivityController {
 
     @PostMapping("/{departmentId}/add-activity/{activityId}")
     @Operation(summary = "Создание связки между отделами и их активностями")
-    public ResponseEntity<String> addActivityToDepartment(@PathVariable int departmentId, @PathVariable int activityId) {
+    public ResponseEntity<String> addActivityToDepartment(
+            @PathVariable int departmentId,
+            @PathVariable int activityId
+    ) {
         departmentActivityService.addActivityToDepartment(departmentId, activityId);
         return ResponseEntity.ok("Activity added to department successfully.");
     }
 
     @GetMapping("/{departmentId}/activities")
     @Operation(summary = "Получение активностей которые есть на отделе")
-    public ResponseEntity<List<Activity>> getActivitiesByDepartmentId(@PathVariable int departmentId) {
+    public ResponseEntity<List<Activity>> getActivitiesByDepartmentId(
+            @PathVariable int departmentId
+    ) {
         List<Activity> activities = departmentActivityService.getActivitiesByDepartmentId(departmentId);
         return ResponseEntity.ok(activities);
     }
 
+    @PutMapping("/{departmentActivityId}/update-activity/{newActivityId}")
+    @Operation(summary = "Обновление связки между отделом и активностью")
+    public ResponseEntity<String> updateDepartmentActivity(
+            @PathVariable int departmentActivityId,
+            @PathVariable int newActivityId
+    ) {
+        departmentActivityService.updateDepartmentActivity(departmentActivityId, newActivityId);
+        return ResponseEntity.ok("Department activity updated successfully.");
+    }
+
+    @DeleteMapping("/{departmentActivityId}/delete")
+    @Operation(summary = "Удаление связки между отделом и активностью")
+    public ResponseEntity<String> deleteDepartmentActivity(
+            @PathVariable int departmentActivityId
+    ) {
+        departmentActivityService.deleteDepartmentActivity(departmentActivityId);
+        return ResponseEntity.ok("Department activity deleted successfully.");
+    }
 }

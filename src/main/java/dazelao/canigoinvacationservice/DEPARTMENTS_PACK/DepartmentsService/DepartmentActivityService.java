@@ -64,5 +64,23 @@ public class DepartmentActivityService {
         return userRepository.findByDepartmentActivityId(departmentActivityId);
     }
 
+    public void updateDepartmentActivity(int departmentActivityId, int newActivityId) {
+        DepartmentActivity departmentActivity = departmentActivityRepo.findById(departmentActivityId)
+                .orElseThrow(() -> new EntityNotFoundException("DepartmentActivity with id " + departmentActivityId + " not found."));
+
+        Activity newActivity = activityRepo.findById(newActivityId)
+                .orElseThrow(() -> new EntityNotFoundException("Activity with id " + newActivityId + " not found."));
+
+        departmentActivity.setActivity(newActivity);
+
+        departmentActivityRepo.save(departmentActivity);
+    }
+
+    public void deleteDepartmentActivity(int departmentActivityId) {
+        DepartmentActivity departmentActivity = departmentActivityRepo.findById(departmentActivityId)
+                .orElseThrow(() -> new EntityNotFoundException("DepartmentActivity with id " + departmentActivityId + " not found."));
+
+        departmentActivityRepo.delete(departmentActivity);
+    }
 
 }

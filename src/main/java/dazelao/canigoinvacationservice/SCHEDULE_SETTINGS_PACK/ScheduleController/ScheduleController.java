@@ -14,16 +14,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.YearMonth;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import static jdk.jfr.internal.Utils.formatDuration;
 
 
 @RestController

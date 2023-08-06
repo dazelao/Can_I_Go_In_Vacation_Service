@@ -21,9 +21,16 @@ public class ActivityService {
         return activityRepository.save(activity);
     }
 
-    public Optional<Activity> getActivityById(int activityId) {
+    public Optional<Activity> getActivityById(Integer activityId) {
         return activityRepository.findById(activityId);
     }
 
+    public Activity updateActivity(Activity activity) {
+        return activityRepository.save(activity);
+    }
 
+    public void deleteActivityById(Integer activityId) {
+        activityRepository.deleteById(activityId);
+    }
 }
+

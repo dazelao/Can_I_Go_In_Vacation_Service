@@ -4,6 +4,7 @@ import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.Departments.DepartmentAc
 import dazelao.canigoinvacationservice.DEPARTMENTS_PACK.DepartmentsRepository.DepartmentActivityRepository;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.UserRepository.UserRepository;
 import dazelao.canigoinvacationservice.USER_SETTINGS_PACK.Users.BaseUser;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final DepartmentActivityRepository departmentActivityRepo;
 
@@ -24,6 +26,7 @@ public class UserService {
     public BaseUser saveUser(BaseUser baseUser) {
         return userRepository.save(baseUser);
     }
+
     public Optional<BaseUser> getUserById(Long id) {
         return userRepository.findById(id);
     }
@@ -39,9 +42,20 @@ public class UserService {
     }
 
     public List<BaseUser> getUsersByDepartmentActivityId(int departmentActivityId) {
-        List<BaseUser> users = userRepository.findByDepartmentActivityId(departmentActivityId);
-        return users;
+        return userRepository.findByDepartmentActivityId(departmentActivityId);
     }
 
+    public BaseUser updateUser(BaseUser updatedUser) {
+        // Make sure the user exists in the database before updating
+        if (userRepository.existsById(updatedUser.getId())) {
+            return userRepository.save(updatedUser);
+        } else {
+            throw new EntityNotFoundException("User with id " + updatedUser.getId() + " not found.");
+        }
+    }
 
+    public void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
+    }
 }
+
